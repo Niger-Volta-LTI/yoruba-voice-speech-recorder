@@ -1,6 +1,6 @@
-#PySide2~=5.12.0
-pyaudio==0.2.*
-#shortuuid
-#soundfile
-#sounddevice
-#webrtcvad
+PySide2
+pyaudio
+shortuuid
+soundfile
+sounddevice
+webrtcvad
