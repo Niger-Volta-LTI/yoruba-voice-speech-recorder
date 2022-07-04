@@ -5,7 +5,7 @@ App for recording speech utterances dictated from text prompts. Speaker name, au
 
 ##  Setup
  * Install with `pip3`
- * Invoke `yoruba_voice_speech_recorder` with python3
+ * Invoke `yoruba_voice_speech_recorder` with `python3`
  * Optionally, uninstall with `pip3`
 
 ```
@@ -14,7 +14,7 @@ $ python3 -m yoruba_voice_speech_recorder -p src/yoruba_voice_speech_recorder/pr
 $ pip3 uninstall yoruba-voice-speech-recorder
 ```
 
-### Caveats and Context
+### Caveats and context
 Since `pyAudio` has `portAudio` as a dependency, one must first install `portaudio`. The easiest way is with
 ```
 brew install portaudio
@@ -22,9 +22,8 @@ brew install portaudio
 however if the `portaudio` library is installed in a custom location (manually or via `macports`) then to specify the 
 location of headers and libraries, this is why we use `CPPFLAGS` & `LDFLAGS` above with `pip` to point to `/opt/local`
 
-Similarly, either of these should work (not tested)
+Similarly, either of these should work for `setup.py` based development
 ```
-CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" pip3 install -e .
 CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" python3 ./setup.py
 python3 setup.py build_ext --include-dirs=/opt/local/include --library-dirs=/opt/local/lib --libraries=mylib
 ```
@@ -33,5 +32,5 @@ python3 setup.py build_ext --include-dirs=/opt/local/include --library-dirs=/opt
 ## Packaging solutions
  * [PyOxidizer](https://pyoxidizer.readthedocs.io/en/stable/index.html)
  * [Nuitka](https://doc.qt.io/qtforpython/deployment-nuitka.html)
- * py2app
- * others like Typer, cx_freeze & shiv. 
+ * [py2app](https://py2app.readthedocs.io/en/latest/)
+ * others like [Typer](https://typer.tiangolo.com), [cx_freeze](https://cx-freeze.readthedocs.io/en/latest/) & [shiv](https://shiv.readthedocs.io/en/latest). 
