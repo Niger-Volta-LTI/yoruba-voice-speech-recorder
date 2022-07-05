@@ -17,7 +17,10 @@ from PySide2.QtCore import QObject, Slot
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
 
-from yoruba_voice_speech_recorder import audio
+local_src_module_path = os.path.join(os.path.dirname(__file__), "../../")
+sys.path.append(local_src_module_path)
+
+import src.yoruba_voice_speech_recorder.audio as audio
 import shortuuid
 
 event = threading.Event()
@@ -81,7 +84,8 @@ class Recorder(QObject):
         print(self.speaker_id)
         with open(os.path.join(self.window.property('saveDir'), "recorder.tsv"), "a") as xsvfile:
             xsvfile.write('\t'.join(
-                [filename, self.speaker_id, self.window.property('promptsName'), '', self.sanitize_script(scriptText)]) + '\n')
+                [filename, self.speaker_id, self.window.property('promptsName'), '',
+                 self.sanitize_script(scriptText)]) + '\n')
         logging.debug("wrote %s to %s", len(data), filename)
 
     @Slot(str)
