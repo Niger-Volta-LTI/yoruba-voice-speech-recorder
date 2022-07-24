@@ -13,9 +13,9 @@ import threading
 
 import sounddevice as sd
 import soundfile as sf
-from PySide2.QtCore import QObject, Slot
-from PySide2.QtGui import QGuiApplication
-from PySide2.QtQml import QQmlApplicationEngine
+from PySide6.QtCore import QObject, Slot
+from PySide6.QtGui import QGuiApplication
+from PySide6.QtQml import QQmlApplicationEngine
 
 local_src_module_path = os.path.join(os.path.dirname(__file__), "../../")
 sys.path.append(local_src_module_path)
@@ -178,9 +178,10 @@ class Recorder(QObject):
 
     @classmethod
     def sanitize_script(cls, script):
-        return script.strip()
         script = re.sub(r'[\-]', ' ', script)
-        script = re.sub(r'[,.?!:;"]', '', script)
+        # script = re.sub(r'[,.?!:;"]', '', script)
+        return script.strip()
+
 
     @classmethod
     def split_script(cls, script, split_len):

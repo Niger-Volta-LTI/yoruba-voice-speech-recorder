@@ -1,8 +1,8 @@
-import QtQuick 2.12
-import QtQuick.Window 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Layouts 1.3
-import QtMultimedia 5.8
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtMultimedia
 
 Window {
     id: root
@@ -151,7 +151,7 @@ Window {
                     playFile.source = scriptFilename
                     playFile.play()
                 }
-                Audio {
+                MediaPlayer {
                     id: playFile
                     source: ''
                 }
@@ -179,5 +179,4 @@ Window {
             }
         }
     }
-
 }
