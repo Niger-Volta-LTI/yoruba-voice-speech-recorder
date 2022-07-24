@@ -11,7 +11,6 @@ import re
 import sys
 import threading
 
-import sounddevice as sd
 import soundfile as sf
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QGuiApplication
@@ -87,31 +86,6 @@ class Recorder(QObject):
                 [filename, self.speaker_id, self.window.property('promptsName'), '',
                  self.sanitize_script(scriptText)]) + '\n')
         logging.debug("wrote %s to %s", len(data), filename)
-
-    @Slot(str)
-    def playFile(self, filename):
-        try:
-            data, fs = sf.read(filename, always_2d=True)
-
-            def callback(outdata, frames, status):
-                global current_frame
-                if status:
-                    print(status)
-                chunksize = min(len(data) - current_frame, frames)
-                outdata[:chunksize] = data[current_frame:current_frame + chunksize]
-                if chunksize < frames:
-                    outdata[chunksize:] = 0
-                    raise sd.CallbackStop()
-                current_frame += chunksize
-
-            stream = sd.OutputStream(samplerate=fs, device=1, channels=data.shape[1],
-                                     callback=callback, finished_callback=event.set)
-            with stream:
-                event.wait()  # Wait until playback is finished
-        except KeyboardInterrupt:
-            exit('\nInterrupted by user')
-        except Exception as e:
-            exit(type(e).__name__ + ': ' + str(e))
 
     @Slot(str)
     def deleteFile(self, filename):
