@@ -146,7 +146,6 @@ Window {
                 text: "Play"
                 enabled: scriptFilename
                 highlighted: playFile.playbackState == playFile.PlayingState
-                // onClicked: recorder.playFile(scriptFilename)
                 onClicked: {
                     playFile.source = scriptFilename
                     playFile.play()
@@ -154,6 +153,7 @@ Window {
                 MediaPlayer {
                     id: playFile
                     source: ''
+                    audioOutput: AudioOutput {}
                 }
             }
 
