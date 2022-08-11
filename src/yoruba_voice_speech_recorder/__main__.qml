@@ -7,7 +7,7 @@ import QtMultimedia
 Window {
     id: root
     visible: true
-    width: 1200; height: 800
+    width: 1440; height: 1080
     color: "#f5f5f6"
     title: qsTr("Yorùbá Voice Recorder")
 
@@ -27,6 +27,7 @@ Window {
     onRecordingChanged: recorder.toggleRecording(recording)
     onScriptFilenameChanged: scriptModel.get(scriptListView.currentIndex).filename = scriptFilename
 
+    // called by python code on init for each listview item: self.window.appendScript({'script': script, 'filename': ''})
     function appendScript(data) {
         scriptModel.append(data)
     }
@@ -65,19 +66,21 @@ Window {
                 }
 
                 delegate: Item {
-                    width: parent.width - 20
-                    height: 50
+                    width: parent.width * 2/3
+                    height: 60
                     Column {
                         Text {
-                            text: script
-                            font.pointSize: 18
+                            text: script                    // Item .script
+                            font.pointSize: 20
                             // color: "#ffffff"
+
+
                         }
                         Text {
-                            text: 'Filename: ' + filename
-                            font.pointSize: 14
-                            // color: "#ffffff"
-                            // font.bold: true
+                            text: 'Filename: ' + filename   // Item .filename
+                            font.pointSize: 16
+                            color: filename == '' ? "red" : "green"
+                            font.bold: filename == '' ? false : true
                         }
                     }
                     MouseArea {
@@ -86,16 +89,22 @@ Window {
                     }
                 }
             }
+
+
+
         }
 
+            // ComboBox {
+            //     editable: false
+            //     model: ListModel {
+            //         id: model
+            //         ListElement { text: "Script set 1" }
+            //         ListElement { text: "Script set 2" }
+            //         ListElement { text: "Script set 3" }
+            //     }
+            // }
+
         RowLayout {
-            CheckBox {
-                Layout.fillWidth: true
-                font.pointSize: 18
-                text: 'Filter all punctuation (only speak normal words!)'
-                checked: true
-                enabled: false
-            }
 
             Text {
                  text: 'Enter Speaker Name: '
@@ -134,7 +143,7 @@ Window {
                     recorder.startRecording();
                 } else {
                     recorder.finishRecording();
-                    gotoNextScript();
+                    gotoNextScript();   // local QML function
                 }
             }
         }
@@ -162,7 +171,7 @@ Window {
                 font.pointSize: 18
                 text: "Delete"
                 enabled: scriptFilename
-                onClicked: recorder.deleteFile(scriptFilename)
+                onClicked: recorder.deleteFile(scriptFilename) // @Slot def deleteFile(self, filename)
             }
 
             Button {
@@ -173,7 +182,7 @@ Window {
                     if (recording) {
                         recording = !recording;
                     } else {
-                        gotoNextScript()
+                        gotoNextScript()    // local QML function
                     }
                 }
             }

@@ -150,6 +150,7 @@ class Recorder(QObject):
             scripts = sum(scripts, [])
         return scripts[:n]
 
+    # TODO - IO do we need to sanitize scripts?
     @classmethod
     def sanitize_script(cls, script):
         script = re.sub(r'[\-]', ' ', script)
