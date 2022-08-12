@@ -12,7 +12,7 @@ import sys
 import threading
 
 import soundfile as sf
-from PySide6.QtCore import QObject, Slot
+from PySide6.QtCore import QObject, Slot, QUrl
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 
@@ -43,6 +43,11 @@ class Recorder(QObject):
         self.prompt_len_soft_max = prompt_len_soft_max
         self.ordered = ordered
         self.audio = audio.Audio()
+
+    @Slot(QUrl)
+    def read_file(self, url):
+        filename = url.toLocalFile()
+        logging.debug('read_file: filename %s', filename)
 
     @Slot(QObject)
     def init(self, scriptModel):
@@ -206,7 +211,7 @@ def main():
     engine.load(qml_file)
     recorder.window = engine.rootObjects()[0]
 
-    res = app.exec_()
+    res = app.exec()
     sys.exit(res)
 
 

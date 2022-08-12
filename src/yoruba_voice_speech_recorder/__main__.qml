@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Dialogs
 import QtMultimedia
 
 Window {
@@ -43,7 +44,7 @@ Window {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 6
+        anchors.margins: 10
 
         Frame {
             Layout.fillHeight: true
@@ -58,6 +59,7 @@ Window {
                 clip: true
                 ScrollBar.vertical: ScrollBar { active: true; policy: ScrollBar.AlwaysOn }
                 highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+                spacing: 3
 
                 onCurrentItemChanged: {
                     scriptText = model.get(currentIndex).script;
@@ -66,21 +68,21 @@ Window {
                 }
 
                 delegate: Item {
-                    width: parent.width * 2/3
+                    width: 940  // fixed width elements, no longer a function of parent.width
                     height: 60
                     Column {
                         Text {
                             text: script                    // Item .script
-                            font.pointSize: 20
-                            // color: "#ffffff"
-
-
+                            font.pointSize: 22
+                            color: filename == '' ? "black" : "green"
+                            // anchors.verticalCenter: parent.verticalCenter // TODO IO this is broken
                         }
                         Text {
                             text: 'Filename: ' + filename   // Item .filename
-                            font.pointSize: 16
-                            color: filename == '' ? "red" : "green"
-                            font.bold: filename == '' ? false : true
+                            font.pointSize: 18
+                            color: filename == '' ? "red" : "black"
+                            // font.bold: filename == '' ? false : true
+                            // color: "#ffffff"
                         }
                     }
                     MouseArea {
@@ -106,12 +108,45 @@ Window {
 
         RowLayout {
 
+            // Fills the width of this row, pushing elements to the right
+            Item {
+                Layout.fillWidth: true
+            }
+            
+            Button {
+                Layout.preferredHeight: 45
+                font.pointSize: 22
+                text: "Load Prompts file"
+                highlighted: promptsName != '' ? true : false
+                onClicked: { fileDialog.visible = true }
+            }
+
+            TextArea {
+                width: 100
+                font.pointSize: 18
+                readOnly: true
+                text: promptsName
+                verticalAlignment: TextField.AlignVCenter
+
+            }
+
+            // Separator between Prompt file && Speakername
+            Item {
+                width: 15
+            }
             Text {
-                 text: 'Enter Speaker Name: '
-                       font.pointSize: 18
+                text: 'Speaker Name:'
+                font.pointSize: 18
+                verticalAlignment: TextField.AlignVCenter
             }
             TextField {
-                placeholderText: qsTr("Àrẹ̀mú")
+                Layout.preferredHeight: 30
+                font.pointSize: 18
+                placeholderText: "Olúwadáminí"
+                verticalAlignment: TextField.AlignVCenter
+                background: Rectangle {
+                        border.color: control.enabled ? "#21be2b" : "transparent"
+                }
                 onAccepted: {
                     console.log("Speaker Name is: " + text)
                     recorder.acceptSpeakerNameText(text)
@@ -121,7 +156,7 @@ Window {
 
         TextArea {
             Layout.fillWidth: true
-            font.pointSize: 24
+            font.pointSize: 26
             wrapMode: TextEdit.Wrap
             readOnly: true
             text: scriptText
@@ -134,7 +169,7 @@ Window {
         Button {
             Layout.fillWidth: true
             Layout.preferredHeight: 60
-            font.pointSize: 18
+            font.pointSize: 22
             highlighted: recording
             text: recording ? "Stop" : "Start"
             onClicked: {
@@ -151,7 +186,8 @@ Window {
         RowLayout {
             Button {
                 Layout.fillWidth: true
-                font.pointSize: 18
+                Layout.preferredHeight: 40
+                font.pointSize: 22
                 text: "Play"
                 enabled: scriptFilename
                 highlighted: playFile.playbackState == playFile.PlayingState
@@ -168,7 +204,8 @@ Window {
 
             Button {
                 Layout.fillWidth: true
-                font.pointSize: 18
+                Layout.preferredHeight: 40
+                font.pointSize: 22
                 text: "Delete"
                 enabled: scriptFilename
                 onClicked: recorder.deleteFile(scriptFilename) // @Slot def deleteFile(self, filename)
@@ -176,7 +213,8 @@ Window {
 
             Button {
                 Layout.fillWidth: true
-                font.pointSize: 18
+                Layout.preferredHeight: 40
+                font.pointSize: 22
                 text: recording ? "Cancel" : "Next"
                 onClicked: {
                     if (recording) {
@@ -188,4 +226,18 @@ Window {
             }
         }
     }
+
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
+        selectedNameFilter.index: 0
+        nameFilters: ["Prompt files (*.txt)", "Text files (*.txt)"]
+     
+        onAccepted: {
+            recorder.read_file(fileDialog.currentFile)
+        }
+        onRejected: {
+            console.log("Canceled")
+        }
+     }
 }
