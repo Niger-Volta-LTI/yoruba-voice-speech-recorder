@@ -29,7 +29,7 @@ current_frame = 0
 class Recorder(QObject):
     """docstring for Recorder"""
 
-    def __init__(self, save_dir, prompts_filename, ordered=False, prompts_count=100, prompt_len_soft_max=None):
+    def __init__(self, save_dir, prompts_filename, ordered=True, prompts_count=250, prompt_len_soft_max=None):
         super(Recorder, self).__init__()
         self.scriptModel = None
         self.speaker_id = None
@@ -45,15 +45,21 @@ class Recorder(QObject):
         self.audio = audio.Audio()
 
     @Slot(QUrl)
-    def read_file(self, url):
+    def reinit_with_url(self, url):
         filename = url.toLocalFile()
-        logging.debug('read_file: filename %s', filename)
+        logging.debug('reinit_with_url: new prompt filename: %s', filename)
+        self.prompts_filename = filename    # set new prompt filename
+        self.scriptModel.clear()            # empty out list view
+        self.populate_listview()            # re-init
 
     @Slot(QObject)
     def init(self, scriptModel):
         logging.debug("init: %s", scriptModel)
         self.window.setProperty('saveDir', self.save_dir)
         self.scriptModel = scriptModel
+        self.populate_listview()
+
+    def populate_listview(self):
         self.window.setProperty('promptsName', os.path.splitext(os.path.basename(self.prompts_filename))[0])
         for script in self.get_scripts_from_file(self.prompts_count, self.prompts_filename, self.ordered,
                                                  split_len=self.prompt_len_soft_max):
@@ -193,10 +199,10 @@ def main():
     parser.add_argument('-p', '--prompts_filename', help='file containing prompts to choose from')
     parser.add_argument('-d', '--save_dir', default='./audio_data',
                         help='where to save .wav & recorder.tsv files (default: %(default)s)')
-    parser.add_argument('-c', '--prompts_count', type=int, default=100,
+    parser.add_argument('-c', '--prompts_count', type=int, default=250,
                         help='number of prompts to select and display (default: %(default)s)')
     parser.add_argument('-l', '--prompt_len_soft_max', type=int)
-    parser.add_argument('-o', '--ordered', action='store_true', default=False,
+    parser.add_argument('-o', '--ordered', action='store_true', default=True,
                         help='present prompts in order, as opposed to random (default: %(default)s)')
     args = parser.parse_args()
     assert args.prompts_filename

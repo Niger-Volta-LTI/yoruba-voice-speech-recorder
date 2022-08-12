@@ -234,7 +234,7 @@ Window {
         nameFilters: ["Prompt files (*.txt)", "Text files (*.txt)"]
      
         onAccepted: {
-            recorder.read_file(fileDialog.currentFile)
+            recorder.reinit_with_url(fileDialog.currentFile)
         }
         onRejected: {
             console.log("Canceled")
