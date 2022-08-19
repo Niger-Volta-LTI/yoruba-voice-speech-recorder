@@ -14,15 +14,14 @@ The easiest way is with [brew](https://brew.sh/)
 ```
 brew install portaudio
 ```
-Because `portaudio` library may be installed in a custom location (manually, via `macports` or on Apple `arm64` systems), we 
-must specify the location of headers and libraries, with `CPPFLAGS` & `LDFLAGS`. This is done within the `./install.sh` script. 
+`portaudio` library may be installed in a custom location depending on your package manager `brew` or `macports`, or depending on your computer's hardware
+`arm64` vs Intel `x86`. In all cases, we must specify the location of headers and libraries, with `CPPFLAGS` & `LDFLAGS`. 
+This is already done within the `./install.sh` script, but may need to be modified based on the above :point_up:
 
-For reference brew installs `portaudio` in the following locations:
-```
-brew on ARM64 (Apple M1): CPPFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib" pip3 install -e .
-brew on Intel x86 (Older Macs): CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" pip3 install -e .
-macports: CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" pip3 install -e .
-```
+For reference `brew` installs `portaudio` in the following locations:
+ - **ARM64 (Apple M1)**: `CPPFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib" pip3 install -e .`
+ - **Intel x86 (Older Macs)**: `CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" pip3 install -e .`
+ - **Macports**: `CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" pip3 install -e .`
 
 
 ## py2app workflow
