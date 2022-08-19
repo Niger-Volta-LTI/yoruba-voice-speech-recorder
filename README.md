@@ -19,12 +19,12 @@ brew install portaudio
 This is already done within the `./install.sh` script, but may need to be modified based on the above :point_up:
 
 For reference on
- - **([M1 Macs](https://en.wikipedia.org/wiki/Apple_M1))**: `CPPFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib" pip3 install -e .`
+ - **[M1 Macs](https://en.wikipedia.org/wiki/Apple_M1)**: `CPPFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib" pip3 install -e .`
  - **Older Intel Macs**: `CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" pip3 install -e .`
  - **Macports**: `CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" pip3 install -e .`
 
 
-## py2app workflow
+## Developer py2app setup
 ```
 $ python3 ./scripts/setup.py py2app -A    # py2app uses setup to build an app bundle (.app)
 $ ./dist/Yorùbá\ Voice\ Speech\ Recorder.app/Contents/MacOS/Yorùbá\ Voice\ Speech\ Recorder  
