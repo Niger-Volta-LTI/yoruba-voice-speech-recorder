@@ -3,8 +3,8 @@
 App for recording speech utterances dictated from text prompts. Speaker name, audio-recording path & prompt text are saved to a metadata file. Use it for building speech recognition and speech synthesis corpora for training and evaluation.
 
 
-##  Developer setup using setup.py (pip) workflow
- * `git clon` repo and `cd` into repo directory
+##  Developer setup
+ * `git clone` repo and `cd` into repo directory
  * run installation script `./scripts/install.sh`
  * start app with `./scripts/start.sh`
 
