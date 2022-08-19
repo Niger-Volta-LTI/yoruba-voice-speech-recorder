@@ -3,37 +3,31 @@
 App for recording speech utterances dictated from text prompts. Speaker name, audio-recording path & prompt text are saved to a metadata file. Use it for building speech recognition and speech synthesis corpora for training and evaluation.
 
 
-##  setup.py (pip) workflow
- * Install with `pip3`
- * Invoke `yoruba_voice_speech_recorder` with `python3`
- * Optionally, uninstall with `pip3`
+##  Developer setup using setup.py (pip) workflow
+ * `git clon` repo and `cd` into repo directory
+ * run installation script `./scripts/install.sh`
+ * start app with `./scripts/start.sh`
 
-```
-$ CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" pip3 install -e .
-$ python3 -m yoruba_voice_speech_recorder -p src/yoruba_voice_speech_recorder/prompts/timit.txt -d ~/Desktop/audio-data
-$ pip3 uninstall yoruba-voice-speech-recorder
-```
-
-### Caveats and context
-Since `pyAudio` has `portAudio` as a dependency, one must first install `portaudio`. The easiest way is with
+### Caveats
+`pyAudio`, the audio library used for recording audio, requires [portaudio](http://www.portaudio.com/) to be installed on the system.
+The easiest way is with [brew](https://brew.sh/)
 ```
 brew install portaudio
 ```
-however if the `portaudio` library is installed in a custom location (manually or via `macports`) then to specify the 
-location of headers and libraries, this is why we use `CPPFLAGS` & `LDFLAGS` above with `pip` to point to `/opt/local`
+Because `portaudio` library may be installed in a custom location (manually, via `macports` or on Apple `arm64` systems), we 
+must specify the location of headers and libraries, with `CPPFLAGS` & `LDFLAGS`. This is done within the `./install.sh` script. 
 
-Similarly, either of these should work for `setup.py` based development
+For reference brew installs `portaudio` in the following locations:
 ```
-CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" python3 ./setup.py
-python3 setup.py build_ext --include-dirs=/opt/local/include --library-dirs=/opt/local/lib --libraries=mylib
+brew on ARM64 (Apple M1): CPPFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib" pip3 install -e .
+brew on Intel x86 (Older Macs): CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" pip3 install -e .
+macports: CPPFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib" pip3 install -e .
 ```
 
 
 ## py2app workflow
-
 ```
-$ cp setup.py2app setup.py      # switch to a py2app setup
-$ python3 setup.py py2app -A    # py2app uses setup to build an app bundle (.app)
+$ python3 ./scripts/setup.py py2app -A    # py2app uses setup to build an app bundle (.app)
 $ ./dist/Yorùbá\ Voice\ Speech\ Recorder.app/Contents/MacOS/Yorùbá\ Voice\ Speech\ Recorder  
      -p ~/github/yoruba-voice-speech-recorder/src/yoruba_voice_speech_recorder/prompts/timit.txt 
      -d ~/Desktop/audio-data
