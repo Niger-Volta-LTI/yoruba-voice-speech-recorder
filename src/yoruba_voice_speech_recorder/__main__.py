@@ -11,10 +11,10 @@ import re
 import sys
 import threading
 
-import soundfile as sf
 from PySide6.QtCore import QObject, Slot, QUrl
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtWidgets import QApplication
 from PySide6.QtQml import QQmlApplicationEngine
+from PySide6.QtWidgets import QMessageBox
 
 local_src_module_path = os.path.join(os.path.dirname(__file__), "../../")
 sys.path.append(local_src_module_path)
@@ -36,13 +36,38 @@ class Recorder(QObject):
         self.speaker_name = None
         if not os.path.isdir(save_dir): raise Exception("save_dir '%s' is not a directory" % save_dir)
         self.save_dir = save_dir
-        if not os.path.isfile(prompts_filename): raise Exception(
-            "prompts_filename '%s' is not a file" % prompts_filename)
+        if not os.path.isfile(prompts_filename):
+            # raise Exception("prompts_filename '%s' is not a file" % prompts_filename)
+            self.msgWarning = QMessageBox()
+            self.msgWarning.setIcon(QMessageBox.Warning)
+            self.msgWarning.setText(" Prompts file ńkọ́ ?\n Please load a prompts file")
+            self.msgWarning.setStandardButtons(QMessageBox.Ok)
+            self.msgWarning.setWindowTitle("Prompt file needed Message")
+            self.msgWarning.show()
+
         self.prompts_filename = prompts_filename
+        print(self.count_prompts_file_prompts_count())
         self.prompts_count = prompts_count
         self.prompt_len_soft_max = prompt_len_soft_max
         self.ordered = ordered
         self.audio = audio.Audio()
+
+    def count_prompts_file_prompts_count(self):
+        try:
+            with open(self.prompts_filename, 'r') as fp:
+                num_lines = 0
+                for count, line in enumerate(fp):
+                    line = line.strip()
+
+                    if line == "" \
+                            or line.startswith(";") \
+                            or line.startswith("#"):
+                        continue
+                    else:
+                        num_lines += 1
+            return num_lines
+        except FileNotFoundError as not_found:
+            print(not_found.filename)
 
     @Slot(QUrl)
     def reinit_with_url(self, url):
@@ -60,6 +85,8 @@ class Recorder(QObject):
         self.populate_listview()
 
     def populate_listview(self):
+        self.prompts_count = self.count_prompts_file_prompts_count()
+        logging.info("prompts_count >>>>> {}".format(self.prompts_count))
         self.window.setProperty('promptsName', os.path.splitext(os.path.basename(self.prompts_filename))[0])
         for script in self.get_scripts_from_file(self.prompts_count, self.prompts_filename, self.ordered,
                                                  split_len=self.prompt_len_soft_max):
@@ -208,7 +235,7 @@ def main():
     assert args.prompts_filename
 
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-    app = QGuiApplication(sys.argv)
+    app = QApplication(sys.argv)
     engine = QQmlApplicationEngine()
     engine.addImportPath(current_path)
     kwargs = {k: v for k, v in vars(args).items() if v is not None and k in 'prompts_count prompt_len_soft_max'.split()}
