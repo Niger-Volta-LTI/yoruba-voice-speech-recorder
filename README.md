@@ -37,3 +37,17 @@ $ ./dist/Yorùbá\ Voice\ Speech\ Recorder.app/Contents/MacOS/Yorùbá\ Voice\ S
  * [PyOxidizer](https://pyoxidizer.readthedocs.io/en/stable/index.html)
  * [Nuitka](https://doc.qt.io/qtforpython/deployment-nuitka.html)
  * others like [Typer](https://typer.tiangolo.com), [cx_freeze](https://cx-freeze.readthedocs.io/en/latest/) & [shiv](https://shiv.readthedocs.io/en/latest). 
+
+## License
+Distributed under the AGPL-3.0 license. See the LICENSE text file for more information.
+
+## Acknowledgements
+This repo is based on a fork of https://github.com/daanzu/speech-training-recorder. Improvements include
+* Improvements to the audio playback engine and the fidelity of the audio recording format
+* New support for per-prompt-file speaker labels
+* New support for loading prompt files directly with an open-file dialog window
+* New support for scanning prompt files and creating an automatic layouts based on the available lines
+* Cosmetic updates to the User Interface
+* Updates to the latest version of PySide (QT)
+* Updates to installation and start scripts, to ensure the app can also run on Apple M1 (ARM) computers
+* Scripts for packaging with py2app or PyInstaller
