@@ -4,7 +4,7 @@ App for recording speech utterances dictated from text prompts. Speaker name, au
 
 
 ##  Developer setup
- *  **Prerequisites**: `git`, `python3` & `brew`, `portaudio`
+ *  **Prerequisites**: `git`, `python3` & `brew`
  * `git clone` this repo, `cd` into the repo directory
  * run installation script: `$ ./scripts/install.sh`
  * start app: `$ ./scripts/start.sh`
