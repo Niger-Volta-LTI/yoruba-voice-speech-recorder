@@ -42,7 +42,7 @@ $ ./dist/Yorùbá\ Voice\ Speech\ Recorder.app/Contents/MacOS/Yorùbá\ Voice\ S
 Distributed under the AGPL-3.0 license. See the LICENSE text file for more information.
 
 ## Acknowledgements
-This repo is based on a fork of https://github.com/daanzu/speech-training-recorder. Improvements include
+This repo is based on a fork of https://github.com/daanzu/speech-training-recorder. Our bugfixes, enhancements and additional development efforts include &rarr;
 * Improvements to the audio playback engine and the fidelity of the audio recording format
 * New support for per-prompt-file speaker labels
 * New support for loading prompt files directly with an open-file dialog window
