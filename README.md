@@ -62,10 +62,11 @@ We have implemented updates, bugfixes, enhancements and new features. The additi
 If you found this tool useful, please consider citing
 ```bibtex
 @software{yvspeechrecorder,
-  author = {{Iroro Orife}},
+  author = {Iroro Orife and Aremu Anuoluwapo and K\d{\'{o}}l\'{a} T\'{u}b\d{\`{o}}s\'{u}n},
   title = {Yorùbá Voice Speech Recorder},
   url = {https://github.com/Niger-Volta-LTI/yoruba-voice-speech-recorder},
   version = {v0.1-alpha},
   date = {2022-08-31},
+  year = {2022},
 }
 ```
