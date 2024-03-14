@@ -45,12 +45,12 @@ Distributed under the AGPL-3.0 license. See the LICENSE text file for more infor
 This repo is based on a fork of https://github.com/daanzu/speech-training-recorder. 
 
 We have implemented updates, bugfixes, enhancements and new features. The additional development efforts include &rarr;
-* Updates and fixes to support latest version of Python
-* Updates and fixes to run on the latest Macos ARM-based CPUs
-* Improvements to the audio playback engine and the fidelity of the audio recording format
+* Updates and fixes to support latest version of Python3
+* Updates and fixes to run on the latest MacOS ARM-based CPUs (Homebrew & `portaudio` entanglements)
+* Improvements to the audio playback engine and the fidelity of the audio recording format (eg. 48kHz samplerate)
 * New feature, support for per-prompt-file speaker labels
 * New feature, support for loading prompt files directly with an open-file dialog window
-* New feature, support for scanning prompt files and creating an automatic layouts based on the available lines
+* New feature, support for scanning prompt files and creating automatic layouts based on the available lines
 * Cosmetic updates to the User Interface
 * Updates to the latest version of PySide (QT), for building modern GUI applications
 * Updates to installation and start scripts, to facilitate easier deployment for non-developers
