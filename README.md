@@ -62,7 +62,7 @@ We have implemented updates, bugfixes, enhancements and new features. The additi
 If you found this tool useful, please consider citing
 ```bibtex
 @software{yvspeechrecorder,
-  author = {Iroro Orife and Aremu Anuoluwapo and K\d{\'{o}}l\'{a} T\'{u}b\d{\`{o}}s\'{u}n},
+  author = {Iroro Orife and Aremu Anuoluwapo and K\d{\'{o}}l\'{a} T\'{u}b\d{\`{o}}s\'{u}n and and David Ifeoluwa Adelani and Tol\'{u}l\d{o}p\d{\'{e}} \'{O}g\'{u}nr\d{\`{e}}m\'{i}},
   title = {Yorùbá Voice Speech Recorder},
   url = {https://github.com/Niger-Volta-LTI/yoruba-voice-speech-recorder},
   version = {v0.1-alpha},
