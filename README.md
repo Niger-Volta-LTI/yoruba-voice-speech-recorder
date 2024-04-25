@@ -27,7 +27,7 @@ For reference on
 
 ## Developer py2app setup
 ```
-$ python3 ./scripts/setup.py py2app -A    # py2app uses setup to build an app bundle (.app)
+$ python3 ./setup.py py2app -A    # py2app uses setup to build an app bundle (.app)
 $ ./dist/Yorùbá\ Voice\ Speech\ Recorder.app/Contents/MacOS/Yorùbá\ Voice\ Speech\ Recorder  
      -p ~/github/yoruba-voice-speech-recorder/src/yoruba_voice_speech_recorder/prompts/timit.txt 
      -d ~/Desktop/audio-data
