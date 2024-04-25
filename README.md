@@ -42,12 +42,31 @@ $ ./dist/Yorùbá\ Voice\ Speech\ Recorder.app/Contents/MacOS/Yorùbá\ Voice\ S
 Distributed under the AGPL-3.0 license. See the LICENSE text file for more information.
 
 ## Acknowledgements
-This repo is based on a fork of https://github.com/daanzu/speech-training-recorder. Our bugfixes, enhancements and additional development efforts include &rarr;
-* Improvements to the audio playback engine and the fidelity of the audio recording format
-* New support for per-prompt-file speaker labels
-* New support for loading prompt files directly with an open-file dialog window
-* New support for scanning prompt files and creating an automatic layouts based on the available lines
+This repo is based on a fork of https://github.com/daanzu/speech-training-recorder. 
+
+We have implemented updates, bugfixes, enhancements and new features. The additional development efforts include &rarr;
+* Updates and fixes to support latest version of Python3
+* Updates and fixes to run on the latest MacOS ARM-based CPUs (Homebrew & `portaudio` entanglements)
+* Improvements to the audio playback engine and the fidelity of the audio recording format (eg. 48kHz samplerate)
+* New feature, support for per-prompt-file speaker labels
+* New feature, support for loading prompt files directly with an open-file dialog window
+* New feature, support for scanning prompt files and creating automatic layouts based on the available lines
 * Cosmetic updates to the User Interface
-* Updates to the latest version of PySide (QT)
-* Updates to installation and start scripts, to ensure the app can also run on Apple M1 (ARM) computers
-* Scripts for packaging with py2app or PyInstaller
+* Updates to the latest version of PySide (QT), for building modern GUI applications
+* Updates to installation and start scripts, to facilitate easier deployment for non-developers
+* Initial scripts for py2app or PyInstaller packaging for distribution on the Mac App Store
+
+
+## Cite this work
+
+If you found this tool useful, please consider citing
+```bibtex
+@software{yvspeechrecorder,
+  author = {Iroro Orife and Aremu Anuoluwapo and K\d{\'{o}}l\'{a} T\'{u}b\d{\`{o}}s\'{u}n and and David Ifeoluwa Adelani and Tol\'{u}l\d{o}p\d{\'{e}} \'{O}g\'{u}nr\d{\`{e}}m\'{i}},
+  title = {Yorùbá Voice Speech Recorder},
+  url = {https://github.com/Niger-Volta-LTI/yoruba-voice-speech-recorder},
+  version = {v0.1-alpha},
+  date = {2022-08-31},
+  year = {2022},
+}
+```
