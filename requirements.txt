@@ -2,4 +2,3 @@ PySide6
 pyaudio
 shortuuid
 sounddevice
-webrtcvad

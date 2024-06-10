@@ -1,6 +1,5 @@
 import collections, wave, logging, os, datetime
 import pyaudio
-import webrtcvad
 import queue
 
 
@@ -75,48 +74,10 @@ class Audio(object):
         wf.close()
 
 
-class VADAudio(Audio):
-    """Filter & segment audio with voice activity detection."""
-
-    def __init__(self, aggressiveness=3):
-        super(VADAudio, self).__init__()
-        self.vad = webrtcvad.Vad(aggressiveness)
-
-    def vad_collector(self, padding_ms=300, ratio=0.75, blocks=None):
-        """Generator that yields series of consecutive audio blocks comprising each utterence, separated by yielding a single None.
-            Determines voice activity by ratio of blocks in padding_ms. Uses a buffer to include padding_ms prior to being triggered.
-            Example: (block, ..., block, None, block, ..., block, None, ...)
-                      |---utterence---|        |---utterence---|
-        """
-        if blocks is None: blocks = iter(self)
-        num_padding_blocks = padding_ms // self.block_duration_ms
-        ring_buffer = collections.deque(maxlen=num_padding_blocks)
-        triggered = False
-
-        for block in blocks:
-            is_speech = self.vad.is_speech(block, self.sample_rate)
-
-            if not triggered:
-                ring_buffer.append((block, is_speech))
-                num_voiced = len([f for f, speech in ring_buffer if speech])
-                if num_voiced > ratio * ring_buffer.maxlen:
-                    triggered = True
-                    for f, s in ring_buffer:
-                        yield f
-                    ring_buffer.clear()
-
-            else:
-                yield block
-                ring_buffer.append((block, is_speech))
-                num_unvoiced = len([f for f, speech in ring_buffer if not speech])
-                if num_unvoiced > ratio * ring_buffer.maxlen:
-                    triggered = False
-                    yield None
-                    ring_buffer.clear()
-
-
 class AudioStore(object):
-    """Stores last `maxlen` recognitions as tuples (audio, text, grammar_name, rule_name), indexed in reverse order (0 most recent)"""
+    """Stores last `maxlen` recognitions as tuples (audio, text, grammar_name, rule_name), indexed in
+    reverse order (0 most recent)
+    """
 
     def __init__(self, audio_obj, maxlen=0, save_dir=None, auto_save_func=None):
         self.audio_obj = audio_obj
@@ -140,7 +101,8 @@ class AudioStore(object):
 
     def save(self, index):
         if self.save_dir:
-            filename = os.path.join(self.save_dir, "retain_" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S_%f") + ".wav")
+            filename = os.path.join(self.save_dir,
+                                    "retain_" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S_%f") + ".wav")
             audio, text, grammar_name, rule_name = self.deque[index]
             self.audio_obj.write_wav(filename, audio)
             with open(os.path.join(self.save_dir, "retain.csv"), "a") as csvfile:
@@ -148,9 +110,12 @@ class AudioStore(object):
 
     def __getitem__(self, key):
         return self.deque[key]
+
     def __len__(self):
         return len(self.deque)
+
     def __bool__(self):
         return True
+
     def __nonzero__(self):
         return True
