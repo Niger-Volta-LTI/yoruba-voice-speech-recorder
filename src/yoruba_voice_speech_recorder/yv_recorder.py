@@ -15,6 +15,7 @@ from PySide6.QtCore import QObject, Slot, QUrl
 from PySide6.QtWidgets import QApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtWidgets import QMessageBox
+from PySide6 import QtGui
 
 # local_src_module_path = os.path.join(os.path.dirname(__file__), "../../")
 # sys.path.append(local_src_module_path)
@@ -26,6 +27,8 @@ import time
 event = threading.Event()
 current_frame = 0
 app = None
+
+# QtGui.QGuiApplication.setSt(QtGui.QStyleFactory.create('Cleanlooks'))
 
 
 class Recorder(QObject):
@@ -49,7 +52,7 @@ class Recorder(QObject):
             self.msgWarning.show()
 
         self.prompts_filename = prompts_filename
-        print(self.count_prompts_file_prompts_count())
+        logging.debug("Prompt file count: {}".format(self.count_prompts_file_prompts_count()))
         self.prompts_count = prompts_count
         self.prompt_len_soft_max = prompt_len_soft_max
         self.ordered = ordered
@@ -70,27 +73,27 @@ class Recorder(QObject):
                         num_lines += 1
             return num_lines
         except FileNotFoundError as not_found:
-            print(not_found.filename)
+            logging.error(not_found.filename)
 
     @Slot(QUrl)
     def reinit_with_url(self, url):
         filename = url.toLocalFile()
         logging.debug('reinit_with_url: new prompt filename: %s', filename)
-        self.prompts_filename = filename    # set new prompt filename
-        self.scriptModel.clear()            # empty out list view
-        self.populate_listview()            # re-init
+        self.prompts_filename = filename  # set new prompt filename
+        self.scriptModel.clear()  # empty out list view
+        self.populate_listview()  # re-init
 
     @Slot(QObject)
     def init(self, scriptModel):
-        logging.debug("init: %s", scriptModel)
+        # logging.debug("init: %s", scriptModel)
         self.window.setProperty('saveDir', self.save_dir)
         self.scriptModel = scriptModel
         self.populate_listview()
 
     def populate_listview(self):
         self.prompts_count = self.count_prompts_file_prompts_count()
-        logging.info("prompts_count >>>>> {}".format(self.prompts_count))
-        self.window.setProperty('promptsName', os.path.splitext(os.path.basename(self.prompts_filename))[0])
+        logging.debug("prompts_count >>>>> {}".format(self.prompts_count))
+        self.window.setProperty('promptsName', os.path.basename(self.prompts_filename))
         for script in self.get_scripts_from_file(self.prompts_count, self.prompts_filename, self.ordered,
                                                  split_len=self.prompt_len_soft_max):
             self.window.appendScript({'script': script, 'filename': ''})
@@ -121,7 +124,7 @@ class Recorder(QObject):
         # Double check speaker name and
         if self.speaker_id is None or self.speaker_id.isspace() or self.speaker_id == "":
             self.speaker_id = "UNNAMED_SPEAKER"
-        print(self.speaker_id)
+        logging.debug("Speaker ID: {}".format(self.speaker_id))
         with open(os.path.join(self.window.property('saveDir'), "recorder.tsv"), "a") as xsvfile:
             xsvfile.write('\t'.join(
                 [filename, self.speaker_id, self.window.property('promptsName'), '',
@@ -143,7 +146,7 @@ class Recorder(QObject):
 
     @Slot(str)
     def acceptSpeakerNameText(self, speakerName):
-        print("acceptSpeakerNameText Slot")
+        logging.debug("acceptSpeakerNameText Slot")
         self.speaker_name = speakerName
         if self.speaker_name is None or self.speaker_name.isspace() or self.speaker_name == "":
             self.speaker_name = "UNNAMED_SPEAKER"
@@ -203,13 +206,13 @@ class Recorder(QObject):
         scripts = []
         n = math.ceil(len(script) / split_len)
         startpos = 0
-        # print(script)
+        # logging.debug(script)
         regex = re.compile(r'\s+')
         for i in range(n):
             match = regex.search(script, pos=startpos + split_len)
             endpos = match.start() if match else None
             scripts.append(script[startpos:endpos].strip())
-            # print(startpos, endpos, scripts)
+            # logging.debug(startpos, endpos, scripts)
             if endpos is None: break
             startpos = endpos
         return scripts
@@ -226,9 +229,10 @@ def main():
         dictation audio and metadata to a `.wav` file and `recorder.tsv` file
         respectively.
     ''')
-    parser.add_argument('-p', '--prompts_filename', default='./prompts/yovo_3501.txt',
+    parser.add_argument('-p', '--prompts_filename',
+                        default=os.path.dirname(os.path.realpath(__file__)) + '/prompts/yovo_3501.txt',
                         help='file containing prompts to choose from')
-    parser.add_argument('-d', '--save_dir', default='./audio_data',
+    parser.add_argument('-d', '--save_dir', default=os.path.expanduser("~") + '/Desktop/audio-data',
                         help='where to save .wav & recorder.tsv files (default: %(default)s)')
     parser.add_argument('-c', '--prompts_count', type=int, default=250,
                         help='number of prompts to select and display (default: %(default)s)')
@@ -257,5 +261,5 @@ def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=10)
+    logging.basicConfig(level=logging.DEBUG)
     main()

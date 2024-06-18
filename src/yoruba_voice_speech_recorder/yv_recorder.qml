@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Window
-import QtQuick.Controls.Basic
+import QtQuick.Controls.macOS   // Basic  // Fusion // Universal // Imagine
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtMultimedia
@@ -136,12 +136,13 @@ Window {
             }
 
             TextArea {
-                width: 100
                 font.pointSize: 18
                 readOnly: true
                 text: promptsName
                 verticalAlignment: TextField.AlignVCenter
                 background: Rectangle {
+                    implicitWidth: 200
+                    implicitHeight: 40
                     border.width: 1
                     border.color: promptsName != "" ? true : false
                 }
@@ -166,7 +167,7 @@ Window {
                         border.color: control.enabled ? "#21be2b" : "transparent"
                 }
                 onAccepted: {
-                    console.log("Speaker Name is: " + text)
+                    console.log("Speaker Name: " + text)
                     recorder.acceptSpeakerNameText(text)
                 }
             }
