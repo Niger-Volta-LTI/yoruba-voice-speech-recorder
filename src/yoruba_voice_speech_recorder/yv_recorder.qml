@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Window
-import QtQuick.Controls
+import QtQuick.Controls.macOS   // Basic  // Fusion // Universal // Imagine
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtMultimedia
@@ -10,7 +10,7 @@ Window {
     visible: true
     width: 1440; height: 1080
     color: "#f5f5f6"
-    title: qsTr("Yorùbá Voice Recorder")
+    title: qsTr("Yorùbá Voice Speech Recorder")
 
     property bool recording: false
     property string promptsName: ''
@@ -74,13 +74,13 @@ Window {
                         Text {
                             text: script                    // Item .script
                             font.pointSize: 22
-                            color: filename == '' ? "black" : "green"
+                            color: filename == "" ? "black" : "green"
                             // anchors.verticalCenter: parent.verticalCenter // TODO IO this is broken
                         }
                         Text {
                             text: 'Filename: ' + filename   // Item .filename
                             font.pointSize: 18
-                            color: filename == '' ? "red" : "black"
+                            color: filename == "" ? "red" : "black"
                             // font.bold: filename == '' ? false : true
                             // color: "#ffffff"
                         }
@@ -114,20 +114,38 @@ Window {
             }
             
             Button {
+                id: prompt_button_control
                 Layout.preferredHeight: 45
                 font.pointSize: 22
-                text: "Load Prompts file"
-                highlighted: promptsName != '' ? true : false
+                text: qsTr("Load Prompts file")
                 onClicked: { fileDialog.visible = true }
+                contentItem: Text {
+                    text: prompt_button_control.text
+                    font: prompt_button_control.font
+                    opacity: enabled ? 1.0 : 0.3
+                    color: prompt_button_control.down ? "#16bb1a" : "#0f570f"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
+                background: Rectangle {
+                    color: prompt_button_control.down ? "#cae3ca" : "#b0bbb0"
+                    border.width: 1
+                    radius: 2
+                }
             }
 
             TextArea {
-                width: 100
                 font.pointSize: 18
                 readOnly: true
                 text: promptsName
                 verticalAlignment: TextField.AlignVCenter
-
+                background: Rectangle {
+                    implicitWidth: 200
+                    implicitHeight: 40
+                    border.width: 1
+                    border.color: promptsName != "" ? true : false
+                }
             }
 
             // Separator between Prompt file && Speakername
@@ -135,11 +153,12 @@ Window {
                 width: 15
             }
             Text {
-                text: 'Speaker Name:'
+                text: qsTr("Speaker Name:")
                 font.pointSize: 18
                 verticalAlignment: TextField.AlignVCenter
             }
             TextField {
+                id: control
                 Layout.preferredHeight: 30
                 font.pointSize: 18
                 placeholderText: "Olúwadáminí"
@@ -148,7 +167,7 @@ Window {
                         border.color: control.enabled ? "#21be2b" : "transparent"
                 }
                 onAccepted: {
-                    console.log("Speaker Name is: " + text)
+                    console.log("Speaker Name: " + text)
                     recorder.acceptSpeakerNameText(text)
                 }
             }
@@ -171,7 +190,7 @@ Window {
             Layout.preferredHeight: 60
             font.pointSize: 22
             highlighted: recording
-            text: recording ? "Stop" : "Start"
+            text: recording ? qsTr("Stop") : qsTr("Start")
             onClicked: {
                 recording = !recording;
                 if (recording) {
@@ -188,7 +207,7 @@ Window {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 40
                 font.pointSize: 22
-                text: "Play"
+                text: qsTr("Play")
                 enabled: scriptFilename
                 highlighted: playFile.playbackState == playFile.PlayingState
                 onClicked: {
@@ -206,7 +225,7 @@ Window {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 40
                 font.pointSize: 22
-                text: "Delete"
+                text: qsTr("Delete")
                 enabled: scriptFilename
                 onClicked: recorder.deleteFile(scriptFilename) // @Slot def deleteFile(self, filename)
             }
@@ -215,7 +234,7 @@ Window {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 40
                 font.pointSize: 22
-                text: recording ? "Cancel" : "Next"
+                text: recording ? qsTr("Cancel") : qsTr("Next")
                 onClicked: {
                     if (recording) {
                         recording = !recording;
@@ -229,7 +248,7 @@ Window {
 
     FileDialog {
         id: fileDialog
-        title: "Please choose a file"
+        title: qsTr("Please choose a file")
         selectedNameFilter.index: 0
         nameFilters: ["Prompt files (*.txt)", "Text files (*.txt)"]
      
