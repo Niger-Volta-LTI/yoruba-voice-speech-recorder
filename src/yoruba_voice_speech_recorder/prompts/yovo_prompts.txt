@@ -1,10 +1,9 @@
-; File: yovo_3501.txt, updated August 11th 2022
-; lines 3501-4000 [inclusive]
-; Prompt form of each YorubaVoice sentence-text: 500 lines
-; Lines beginning with a semicolon are comments and should be ignored on 
-; searches.
+; Example prompt form of each YorubaVoice sentence-text: 500 lines
+; Lines beginning with a semicolon are comments and should be ignored
 ;	
-Ààrẹ ní inú mi dùn pé mo ní akọ́ṣẹ́mọṣẹ́ Mínísítà fún ètò ìlera.	
+Orílẹ̀-èdè méjèèjì yóò máa jíròrò lórí ìbáṣepọ̀ wọn.
+Ọ̀rọ̀ náà yóò tún túbọ̀ máa tẹ̀síwájú.
+Ààrẹ ní inú mi dùn pé mo ní akọ́ṣẹ́mọṣẹ́ Mínísítà fún ètò ìlera.
 Ó ń mójú tó iṣẹ́ náà lọ́nà tó tọ́ àti èyí tó yẹ.	
 Ọ̀gbẹ́ni yìí wá gbóṣùbà fún Ààrẹ orílẹ̀-èdè Nàìjíríà.	
 Ó ń ṣiṣẹ́ láti dẹ́kun àrùn rọmọlápárọmọlẹ́sẹ̀.	
@@ -63,9 +62,7 @@ Wíwá sí orílẹ̀-èdè Nàìjíríà wà lára ìrìnàjò rẹ̀ lọ sí 
 Ètò náà yóò wáyé nílùú Àbújá àti ní ìlú Èkó.	
 Wọn yóò máa bá àwọn ọ̀dọ́ sọ̀rọ̀ àti àwọn ọba aládé.	
 A kí àwọn oníṣòwò, àwọn ọmọ-ológun, àti àwọn ayàwòrán.	
-Àwọn oníṣe-òwò àti àwọn ilé-iṣé tí kìí ṣe ti aládàáni máa wà níbẹ̀.	
-Orílẹ̀-èdè méjèèjì yóò máa jíròrò lórí ìbáṣepọ̀ wọn.	
-Ọ̀rọ̀ náà yóò tún túbọ̀ máa tẹ̀síwájú.	
+Àwọn oníṣe-òwò àti àwọn ilé-iṣé tí kìí ṣe ti aládàáni máa wà níbẹ̀.
 Láfikún, wọn yóò máa foríkorí lórí ọ̀rọ̀ okòwò.	
 Wọn sọ̀rọ̀ nípa ẹ̀kọ́ fún àwọn obìnrin àti omidan àti nǹkan mìíràn.	
 Eléyìí ni yóò jẹ́ ìgbà kẹta tí yóò jáde fún ipò ààrẹ.	
