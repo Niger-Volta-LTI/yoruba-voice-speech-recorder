@@ -1,4 +1,4 @@
-import collections, wave, logging, os, datetime
+import wave
 import pyaudio
 import queue
 
@@ -12,7 +12,7 @@ class Audio(object):
     FORMAT = pyaudio.paInt16
     RATE = 48000
     CHANNELS = 1
-    BLOCKS_PER_SECOND = 150
+    BLOCKS_PER_SECOND = 150  # 320 samples per block == block_size
 
     def __init__(self, callback=None, buffer_s=0, flush_queue=True):
         def proxy_callback(in_data, frame_count, time_info, status):
@@ -72,50 +72,3 @@ class Audio(object):
         wf.setframerate(self.sample_rate)
         wf.writeframes(data)
         wf.close()
-
-
-class AudioStore(object):
-    """Stores last `maxlen` recognitions as tuples (audio, text, grammar_name, rule_name), indexed in
-    reverse order (0 most recent)
-    """
-
-    def __init__(self, audio_obj, maxlen=0, save_dir=None, auto_save_func=None):
-        self.audio_obj = audio_obj
-        self.maxlen = maxlen
-        self.save_dir = save_dir
-        # if self.save_dir and not os.path.exists(self.save_dir): os.makedirs(self.save_dir)
-        self.auto_save_func = auto_save_func
-        self.deque = collections.deque(maxlen=maxlen)
-        self.blocks = []
-
-    def add_block(self, block):
-        if self.maxlen != 0:
-            self.blocks.append(block)
-
-    def finalize(self, text, grammar_name, rule_name):
-        if self.maxlen != 0:
-            audio = ''.join(self.blocks)
-            self.deque.appendleft((audio, text, grammar_name, rule_name))
-            self.blocks = []
-            if self.auto_save_func and self.auto_save_func(*self.deque[0]): self.save(0)
-
-    def save(self, index):
-        if self.save_dir:
-            filename = os.path.join(self.save_dir,
-                                    "retain_" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S_%f") + ".wav")
-            audio, text, grammar_name, rule_name = self.deque[index]
-            self.audio_obj.write_wav(filename, audio)
-            with open(os.path.join(self.save_dir, "retain.csv"), "a") as csvfile:
-                csvfile.write(','.join([filename, '0', grammar_name, rule_name, text]) + '\n')
-
-    def __getitem__(self, key):
-        return self.deque[key]
-
-    def __len__(self):
-        return len(self.deque)
-
-    def __bool__(self):
-        return True
-
-    def __nonzero__(self):
-        return True

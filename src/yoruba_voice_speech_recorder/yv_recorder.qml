@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Window
-import QtQuick.Controls.macOS   // Basic  // Fusion // Universal // Imagine
+// https://doc.qt.io/qt-6.2/qtquickcontrols2-macos.html
+import QtQuick.Controls.Universal //.macOS   // Basic  // Fusion // Universal // Imagine
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtMultimedia

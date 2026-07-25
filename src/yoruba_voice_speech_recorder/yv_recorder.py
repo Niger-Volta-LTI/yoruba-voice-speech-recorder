@@ -28,8 +28,6 @@ event = threading.Event()
 current_frame = 0
 app = None
 
-# QtGui.QGuiApplication.setSt(QtGui.QStyleFactory.create('Cleanlooks'))
-
 
 class Recorder(QObject):
     """docstring for Recorder"""
@@ -230,7 +228,7 @@ def main():
         respectively.
     ''')
     parser.add_argument('-p', '--prompts_filename',
-                        default=os.path.dirname(os.path.realpath(__file__)) + '/prompts/yovo_3501.txt',
+                        default=os.path.dirname(os.path.realpath(__file__)) + '/prompts/yovo_prompts.txt',
                         help='file containing prompts to choose from')
     parser.add_argument('-d', '--save_dir', default=os.path.expanduser("~") + '/Desktop/audio-data',
                         help='where to save .wav & recorder.tsv files (default: %(default)s)')
@@ -244,20 +242,24 @@ def main():
 
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QApplication(sys.argv)
+    # https://pythonbasics.org/pyqt-style/
+    # app.setStyle('Windows')
+    # app.setStyle('Fusion')
     engine = QQmlApplicationEngine()
     engine.addImportPath(current_path)
     kwargs = {k: v for k, v in vars(args).items() if v is not None and k in 'prompts_count prompt_len_soft_max'.split()}
     recorder = Recorder(args.save_dir, args.prompts_filename, args.ordered, **kwargs)
     engine.rootContext().setContextProperty('recorder', recorder)
     engine.load(qml_file)
+    if not engine.rootObjects():
+        sys.exit(-1)
+
     recorder.window = engine.rootObjects()[0]
 
-    # This launches the main window
-    res = app.exec()
-
-    # ensure correct deletion order
-    # del engine, app
-    sys.exit(res)
+    # Launches the main window
+    exit_code = app.exec()
+    del engine
+    sys.exit(exit_code)
 
 
 if __name__ == '__main__':
